@@ -12,6 +12,7 @@ const emptyPokemon = {
     defense: 50,
     name: '',
     image: '',
+    hp:50,
     type: 'water'
 }
 
@@ -25,7 +26,7 @@ export const AddEditPokemon = ({ modalIsOpen, setModalIsOpen }) => {
 
 
     const [infoPokemon, setInfoPokemon] = useState(emptyPokemon);
-    const { attack, defense, name, image, type } = infoPokemon;
+    const { attack, defense, name, image, type, hp } = infoPokemon;
 
 
 
@@ -59,7 +60,8 @@ export const AddEditPokemon = ({ modalIsOpen, setModalIsOpen }) => {
         if ( activePokemon != null) {
             dispatch( startPokemonUpdating( infoPokemon ) )
         } else {
-            dispatch( addPokemon(infoPokemon) );
+            console.log(infoPokemon);
+            dispatch( startPokemonAdding(infoPokemon) );
         }
 
         closeModal();
@@ -147,6 +149,22 @@ export const AddEditPokemon = ({ modalIsOpen, setModalIsOpen }) => {
                             />
                             <span className="form-label mr-2">100</span>
                             <span className="adddelete__range-value">{defense}</span>
+                        </div>
+                        <div className="form-group">
+                            <label className="form-label mr-2">Puntos por golpe: </label><br/>
+                            <span className="mr-1">0</span>
+                            <input
+                                type="range"
+                                className="form-range adddelete__range-custom mr-2"
+                                name="hp"
+                                value={hp}
+                                onChange={handleInputChange}
+                                min="0"
+                                max="100"
+                                step="1"
+                            />
+                            <span className="form-label mr-2">100</span>
+                            <span className="adddelete__range-value">{hp}</span>
                         </div>
                         <button
                             type="submit"

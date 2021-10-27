@@ -1,8 +1,6 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { deletePokemon, setActivePokemon, startPokemonDeleting } from '../actions/pokemonActions';
-
-import { listaPokes } from '../helpers/listaBorrar'
 import { AddEditPokemon } from './AddEditPokemon';
 
 export const PokemonsTable = () => {
@@ -45,6 +43,7 @@ export const PokemonsTable = () => {
                         <th scope="col">Nombre</th>
                         <th scope="col">Imagen</th>
                         <th scope="col">Tipo</th>
+                        <th scope="col">Puntos por golpe</th>
                         <th scope="col">Ataque</th>
                         <th scope="col">Defensa</th>
                         <th scope="col">Acciones</th>
@@ -52,7 +51,7 @@ export const PokemonsTable = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {pokemons.map(({ id, name, image, type, attack, defense }) => (
+                    {pokemons.map(({ id, name, image, type, hp, attack, defense }) => (
                         (searchWord.toLowerCase() ==="" || name.toLowerCase().includes(searchWord.toLowerCase())) &&
                         <tr key={id}>
                             <td>{name}</td>
@@ -66,6 +65,7 @@ export const PokemonsTable = () => {
                                 
                                 </td>
                             <td>{type}</td>
+                            <td>{hp}</td>
                             <td>{attack}</td>
                             <td>{defense}</td>
                             <td>

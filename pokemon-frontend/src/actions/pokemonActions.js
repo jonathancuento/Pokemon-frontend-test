@@ -40,10 +40,10 @@ export const startPokemonAdding = (pokemonObject) => {
 
         try {
             console.log(pokemonObject);
-            // const resp = await fetchPokemon('?idAuthor=1', pokemonObject, 'POST');
-            // const body = await resp.json();
-            // console.log(body)
-            // dispatch(addPokemon(pokemonObject));
+            const resp = await fetchPokemon('?idAuthor=1', {...pokemonObject, idAuthor:1}, 'POST');
+            const body = await resp.json();
+            console.log(body)
+            dispatch(addPokemon(pokemonObject));
         } catch (error) {
             console.log(error);
         }

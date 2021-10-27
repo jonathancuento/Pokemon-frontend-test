@@ -4,7 +4,7 @@ export const customStyles = {
         height: "300px",
         height: "auto",
         left: '25%',
-        top: "10%",
+        top: "3%",
         right: 'auto',
         bottom: 'auto',
     },
