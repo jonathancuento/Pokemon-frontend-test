@@ -78,9 +78,9 @@ export const PokemonsTable = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {pokemons.map(({ id, name, image, type, hp, attack, defense }) => (
+                    {pokemons.map(({ id, name, image, type, hp, attack, defense }, idTemp) => (
                         (searchWord.toLowerCase() ==="" || name.toLowerCase().includes(searchWord.toLowerCase())) &&
-                        <tr key={id}>
+                        <tr key={idTemp}>
                             <td>{name}</td>
                             <td>
                                 <img 
