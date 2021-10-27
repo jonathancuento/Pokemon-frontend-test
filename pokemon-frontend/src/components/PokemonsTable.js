@@ -1,6 +1,7 @@
 import React from 'react'
 
 import { listaPokes } from '../helpers/listaBorrar'
+import { AddEditPokemon } from './AddEditPokemon';
 
 export const PokemonsTable = () => {
 
@@ -14,7 +15,7 @@ export const PokemonsTable = () => {
         <div className="pokemontable__container mt-5">
             <div className="d-flex justify-content-between">
                 <h5>Lista de Pokemones</h5>
-                <button className="btn btn-primary">
+                <button className="btn btn-primary" data-toggle="modal" data-target="#pokeModal">
                     Añadir Nuevo
                 </button>
                 {/* <i class="fas fa-plus"></i> */}
@@ -67,7 +68,7 @@ export const PokemonsTable = () => {
                 </tbody>
             </table>
 
-
+        <AddEditPokemon />
         </div>
     )
 }

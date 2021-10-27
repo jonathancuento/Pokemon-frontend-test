@@ -1,19 +1,15 @@
 import React from 'react';
 import './App.css';
 import './Custom.css';
-import { NavBar } from './components/NavBar';
-import { PokemonsTable } from './components/PokemonsTable';
-import { Search } from './components/Search';
+import { store } from './store/store';
+import { Provider } from 'react-redux';
+import { PokemonScreen } from './components/PokemonScreen';
 
-export const PokemonApp = ()=>{
+export const PokemonApp = () => {
   return (
-    <div className="App">
-      <NavBar />
-      <div className="container pokemonapp__container">
-        <Search />
-        <PokemonsTable />
-      </div>
-    </div>
+    <Provider store={store}>
+      <PokemonScreen />
+    </Provider>
   );
 }
 
