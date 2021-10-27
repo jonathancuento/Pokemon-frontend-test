@@ -1,19 +1,24 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { setSearchWord } from './../actions/pokemonActions';
 
 export const Search = () => {
 
-    const [textSearch, setTextSearch] = useState("")
     const dispatch = useDispatch();
+
+    const [textSearch, setTextSearch] = useState("");
+    
+    useEffect(() => {
+        dispatch(setSearchWord(textSearch))
+    }, [textSearch, dispatch]);
+
     
     const handleInputSearch = (e)=>{
         setTextSearch(e.target.value)
-        dispatch(setSearchWord(textSearch))
     }
-    // useEffect(() => {
-    //     console.log(textSearch);
-    // }, [textSearch])
+
+    
+
     return (
         <div className="search__main-container mt-4">
             <h5>Buscar Pokemon</h5>
