@@ -4,21 +4,62 @@ import { fetchPokemon } from "./../helpers/fetchPokemonApi";
 export const startPokemonsLoading = () => {
     return async(dispatch) => {
 
-        // try {
+        try {
             
             const resp = await fetchPokemon( '?idAuthor=1' );
             const body = await resp.json();
             console.log(body);
             dispatch( getPokemons( body ) );
 
-        // } catch (error) {
-        //     console.log(error)
-        // }
+        } catch (error) {
+            console.log(error)
+        }
 
     }
 }
 
-const getPokemons = (events) => ({
+export const startPokemonUpdating = ( pokemonObject ) => {
+    return async(dispatch) => {
+
+        try {
+            const resp = await fetchPokemon(pokemonObject.id, pokemonObject, 'PUT' );
+            const body = await resp.json();
+            console.log(body);
+                dispatch( updatePokemon( pokemonObject ) );
+
+        } catch (error) {
+            console.log(error)
+        }
+
+    }
+}
+
+
+const getPokemons = (pokemonsList) => ({
     type: types.getPokemons,
-    payload: events
+    payload: pokemonsList
+})
+
+export const setSearchWord = (word) => ({
+    type: types.setSearchWord,
+    payload: word
+})
+
+export const setActivePokemon = (pokemonObject) => ({
+    type: types.setActivePokemon,
+    payload: pokemonObject
+})
+
+export const updatePokemon = (pokemonObject) => ({
+    type: types.updatePokemon,
+    payload: pokemonObject
+})
+export const addPokemon = (pokemonObject) => ({
+    type: types.addPokemon,
+    payload: pokemonObject
+})
+
+export const deletePokemon = (id) => ({
+    type: types.deletePokemon,
+    payload: id
 })

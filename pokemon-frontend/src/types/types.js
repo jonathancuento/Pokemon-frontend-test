@@ -10,6 +10,7 @@ export const types = {
     updatePokemon: '[pokemon] update a pokemon',
     getPokemons: '[pokemon] get all pokemons',
     searchPokemon: '[pokemon] search pokemon',
-    setActivePokemon: '[pokemon] setActive pokemon'
+    setActivePokemon: '[pokemon] setActive pokemon',
 
+    setSearchWord:'[pokemon] set search word'
 }

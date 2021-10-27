@@ -5,7 +5,7 @@ import { pokemonReducer } from '../reducer/pokemonReducer';
 const composeEnhancers = (typeof window !== 'undefined' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) || compose;
 
 const rootReducer = combineReducers({
-    pokemon: pokemonReducer
+    pokemonState: pokemonReducer
 });
 
 export const store = createStore(

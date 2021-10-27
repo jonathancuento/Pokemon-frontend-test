@@ -3,9 +3,10 @@ import { NavBar } from './../components/NavBar';
 import { PokemonsTable } from './../components/PokemonsTable';
 import { Search } from './../components/Search';
 import { startPokemonsLoading } from './../actions/pokemonActions';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 export const PokemonScreen = () => {
+  const {searchWord} = useSelector(state => state.pokemonState)
     const dispatch = useDispatch();
     useEffect(() => {
       dispatch(startPokemonsLoading());

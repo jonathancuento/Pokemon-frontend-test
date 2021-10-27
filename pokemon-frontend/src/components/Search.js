@@ -1,6 +1,19 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { setSearchWord } from './../actions/pokemonActions';
 
 export const Search = () => {
+
+    const [textSearch, setTextSearch] = useState("")
+    const dispatch = useDispatch();
+    
+    const handleInputSearch = (e)=>{
+        setTextSearch(e.target.value)
+        dispatch(setSearchWord(textSearch))
+    }
+    // useEffect(() => {
+    //     console.log(textSearch);
+    // }, [textSearch])
     return (
         <div className="search__main-container mt-4">
             <h5>Buscar Pokemon</h5>
@@ -12,7 +25,13 @@ export const Search = () => {
                         </svg>
                     </span>
                 </div>
-                <input type="text" className="form-control search__input" placeholder="Ingrese el nombre del Pokemon" />
+                <input 
+                    type="text" 
+                    className="form-control search__input" 
+                    placeholder="Ingrese el nombre del Pokemon"
+                    value={textSearch}
+                    onChange={handleInputSearch}
+                />
             </div>
 
         </div>

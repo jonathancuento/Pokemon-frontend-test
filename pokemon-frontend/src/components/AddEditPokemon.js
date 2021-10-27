@@ -1,20 +1,43 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useState } from 'react'
-import { closeModal } from '../helpers/closeModal'
+import { useDispatch, useSelector } from 'react-redux'
+import Modal from 'react-modal';
+import { customStyles } from '../helpers/stylesModal';
+import { addPokemon, setActivePokemon, startPokemonUpdating, updatePokemon } from '../actions/pokemonActions';
 
-export const AddEditPokemon = () => {
 
-    const addEditText = "Guardar"
 
-    const [infoPokemon, setInfoPokemon] = useState({
-        pokeAttack: 50,
-        pokeDefense: 50,
-        pokeName: '',
-        pokeImage: '',
-        pokeType: 'water'
-    })
+const emptyPokemon = {
+    attack: 50,
+    defense: 50,
+    name: '',
+    image: '',
+    type: 'water'
+}
 
-    const { pokeAttack, pokeDefense, pokeName, pokeImage, pokeType } = infoPokemon;
+
+export const AddEditPokemon = ({ modalIsOpen, setModalIsOpen }) => {
+    const dispatch = useDispatch()
+    const { activePokemon } = useSelector(state => state.pokemonState);
+
+
+    const addEditText = activePokemon == null ? "Añadir nuevo" : "Guardar cambios";
+
+
+    const [infoPokemon, setInfoPokemon] = useState(emptyPokemon);
+    const { attack, defense, name, image, type } = infoPokemon;
+
+
+
+    useEffect(() => {
+        if (activePokemon != null) {
+            setInfoPokemon(activePokemon);
+        } else {
+            setInfoPokemon(emptyPokemon);
+        }
+    }, [activePokemon, setInfoPokemon])
+
+
 
     const handleInputChange = (e) => {
         setInfoPokemon({
@@ -23,110 +46,119 @@ export const AddEditPokemon = () => {
         });
     }
 
-    const handleSubmit = (e)=>{
+    const closeModal = () => {
+        setModalIsOpen(false);
+        if (activePokemon != null) {
+            dispatch(setActivePokemon(null))
+        }
+    }
+
+    const handleSubmit = (e) => {
         e.preventDefault();
+
+        if ( activePokemon != null) {
+            dispatch( startPokemonUpdating( infoPokemon ) )
+        } else {
+            dispatch( addPokemon(infoPokemon) );
+        }
+
         closeModal();
     }
+
+
     return (
-        <div className="modal fade" id="pokeModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div className="modal-dialog modal-lg" role="document">
-                <div className="modal-content">
-
-                    <div className="modal-header">
-                        <h5 className="modal-title">{addEditText} Pokemon</h5>
-                        <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-
-                    <form>
-                        <div className="adddelete__container container">
-                            <div className="adddelete__container-col">
-                                <div className="form-group">
-                                    <label>Nombre</label>
-                                    <input
-                                        type="text"
-                                        className="form-control"
-                                        name="pokeName"
-                                        value={pokeName}
-                                        placeholder="Pikachu"
-                                        onChange={handleInputChange}
-                                    />
-                                </div>
-                                <div className="form-group">
-                                    <label>Imagen</label>
-                                    <input
-                                        type="text"
-                                        className="form-control"
-                                        name="pokeImage"
-                                        value={pokeImage}
-                                        placeholder="https://imagenes.com/imagen-pikachu.jpg"
-                                        onChange={handleInputChange}
-                                    />
-                                </div>
-                                <div className="form-group">
-                                    <label>Tipo</label>
-                                    <select
-                                        className="form-control"
-                                        onChange={handleInputChange}
-                                        name="pokeType"
-                                        value={pokeType}
-                                    >
-                                        <option value="water" select="true">Agua</option>
-                                        <option value="fire">Fuego</option>
-                                        <option value="normal">Normal</option>
-                                        <option value="bug">Bicho</option>
-                                        <option value="poison">Veneno</option>
-                                    </select>
-                                </div>
-
-
-                            </div>
-                            <div className="adddelete__container-col">
-                                <div className="form-group">
-                                    <label className="form-label mr-2">Ataque: </label>
-                                    <span className="mr-1">0</span>
-                                    <input
-                                        type="range"
-                                        className="form-range adddelete__range-custom mr-3"
-                                        name="pokeAttack" value={pokeAttack}
-                                        onChange={handleInputChange}
-                                        min="0"
-                                        max="100"
-                                        step="1"
-                                    />
-                                    <span className="form-label mr-2">100</span>
-                                    <span className=" mr-2 adddelete__range-value">{pokeAttack}</span>
-                                </div>
-                                <div className="form-group">
-                                    <label className="form-label mr-2">Defensa: </label>
-                                    <span className="mr-1">0</span>
-                                    <input
-                                        type="range"
-                                        className="form-range adddelete__range-custom mr-2"
-                                        name="pokeDefense"
-                                        value={pokeDefense}
-                                        onChange={handleInputChange}
-                                        min="0"
-                                        max="100"
-                                        step="1"
-                                    />
-                                    <span className="form-label mr-2">100</span>
-                                    <span className="adddelete__range-value">{pokeDefense}</span>
-                                </div>
-                                <button
-                                    type="submit"
-                                    className="btn btn-primary mt-5 btn-block"
-                                    onClick={handleSubmit}
-                                >
-                                    {addEditText}
-                                </button>
-
-                            </div>
+        <Modal
+            isOpen={modalIsOpen}
+            onRequestClose={closeModal}
+            style={customStyles}
+            ariaHideApp={false}
+        >
+            <form>
+                <div className="adddelete__container container">
+                    <div className="adddelete__container-col">
+                        <div className="form-group">
+                            <label>Nombre</label>
+                            <input
+                                type="text"
+                                className="form-control"
+                                name="name"
+                                value={name}
+                                placeholder="Pikachu"
+                                onChange={handleInputChange}
+                            />
                         </div>
-                    </form>
+                        <div className="form-group">
+                            <label>Imagen</label>
+                            <input
+                                type="text"
+                                className="form-control"
+                                name="image"
+                                value={image}
+                                placeholder="https://imagenes.com/imagen-pikachu.jpg"
+                                onChange={handleInputChange}
+                            />
+                        </div>
+                        <div className="form-group">
+                            <label>Tipo</label>
+                            <select
+                                className="form-control"
+                                onChange={handleInputChange}
+                                name="type"
+                                value={type}
+                            >
+                                <option value="water" select="true">Agua</option>
+                                <option value="fire">Fuego</option>
+                                <option value="normal">Normal</option>
+                                <option value="bug">Bicho</option>
+                                <option value="poison">Veneno</option>
+                            </select>
+                        </div>
+
+
+                    </div>
+                    <div className="adddelete__container-col">
+                        <div className="form-group">
+                            <label className="form-label mr-2">Ataque: </label>
+                            <span className="mr-1">0</span>
+                            <input
+                                type="range"
+                                className="form-range adddelete__range-custom mr-3"
+                                name="attack" value={attack}
+                                onChange={handleInputChange}
+                                min="0"
+                                max="100"
+                                step="1"
+                            />
+                            <span className="form-label mr-2">100</span>
+                            <span className=" mr-2 adddelete__range-value">{attack}</span>
+                        </div>
+                        <div className="form-group">
+                            <label className="form-label mr-2">Defensa: </label>
+                            <span className="mr-1">0</span>
+                            <input
+                                type="range"
+                                className="form-range adddelete__range-custom mr-2"
+                                name="defense"
+                                value={defense}
+                                onChange={handleInputChange}
+                                min="0"
+                                max="100"
+                                step="1"
+                            />
+                            <span className="form-label mr-2">100</span>
+                            <span className="adddelete__range-value">{defense}</span>
+                        </div>
+                        <button
+                            type="submit"
+                            className="btn btn-primary mt-5 btn-block"
+                            onClick={handleSubmit}
+                        >
+                            {addEditText}
+                        </button>
+
+                    </div>
                 </div>
-            </div>
-        </div>
+            </form>
+        </Modal>
     )
 }

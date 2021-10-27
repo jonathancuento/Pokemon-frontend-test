@@ -1,21 +1,37 @@
 import React from 'react'
+import { useDispatch, useSelector } from 'react-redux';
+import { deletePokemon, setActivePokemon } from '../actions/pokemonActions';
 
 import { listaPokes } from '../helpers/listaBorrar'
 import { AddEditPokemon } from './AddEditPokemon';
 
 export const PokemonsTable = () => {
+    const [modalIsOpen, setModalIsOpen] = React.useState(false);
+    const { pokemons, searchWord } = useSelector( state => state.pokemonState );
 
+
+    const dispatch = useDispatch()
     const handleDelete = (id) => {
+        dispatch(deletePokemon(id))
         console.log(id, " eliminado");
     }
+
+
     const handleEdit = (id) => {
-        console.log(id, " actualizado");
+        const activePokemon = pokemons.find(pokemon=>pokemon.id===id)
+        dispatch(setActivePokemon(activePokemon))
+        setModalIsOpen(true)
+    }
+
+    
+    const handleOpenModal = ()=>{
+        setModalIsOpen(true)
     }
     return (
         <div className="pokemontable__container mt-5">
             <div className="d-flex justify-content-between">
                 <h5>Lista de Pokemones</h5>
-                <button className="btn btn-primary" data-toggle="modal" data-target="#pokeModal">
+                <button className="btn btn-primary" onClick={handleOpenModal}>
                     Añadir Nuevo
                 </button>
                 {/* <i class="fas fa-plus"></i> */}
@@ -36,7 +52,8 @@ export const PokemonsTable = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {listaPokes.map(({ id, name, image, type, attack, defense }) => (
+                    {pokemons.map(({ id, name, image, type, attack, defense }) => (
+                        (searchWord.toLowerCase() ==="" || name.toLowerCase().includes(searchWord.toLowerCase())) &&
                         <tr key={id}>
                             <td>{name}</td>
                             <td>
@@ -68,7 +85,7 @@ export const PokemonsTable = () => {
                 </tbody>
             </table>
 
-        <AddEditPokemon />
+        <AddEditPokemon modalIsOpen={modalIsOpen} setModalIsOpen={setModalIsOpen} />
         </div>
     )
 }
