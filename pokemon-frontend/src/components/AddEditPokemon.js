@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import Modal from 'react-modal';
 import { customStyles } from '../helpers/stylesModal';
-import { addPokemon, setActivePokemon, startPokemonUpdating, updatePokemon } from '../actions/pokemonActions';
+import { addPokemon, setActivePokemon, startPokemonAdding, startPokemonUpdating, updatePokemon } from '../actions/pokemonActions';
 
 
 

@@ -1,6 +1,6 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { deletePokemon, setActivePokemon } from '../actions/pokemonActions';
+import { deletePokemon, setActivePokemon, startPokemonDeleting } from '../actions/pokemonActions';
 
 import { listaPokes } from '../helpers/listaBorrar'
 import { AddEditPokemon } from './AddEditPokemon';
@@ -12,7 +12,7 @@ export const PokemonsTable = () => {
 
     const dispatch = useDispatch()
     const handleDelete = (id) => {
-        dispatch(deletePokemon(id))
+        dispatch(startPokemonDeleting(id))
         console.log(id, " eliminado");
     }
 
@@ -23,7 +23,7 @@ export const PokemonsTable = () => {
         setModalIsOpen(true)
     }
 
-    
+
     const handleOpenModal = ()=>{
         setModalIsOpen(true)
     }

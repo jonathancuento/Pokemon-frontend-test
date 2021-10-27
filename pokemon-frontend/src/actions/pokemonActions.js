@@ -2,14 +2,14 @@ import { types } from "../types/types";
 import { fetchPokemon } from "./../helpers/fetchPokemonApi";
 
 export const startPokemonsLoading = () => {
-    return async(dispatch) => {
+    return async (dispatch) => {
 
         try {
-            
-            const resp = await fetchPokemon( '?idAuthor=1' );
+
+            const resp = await fetchPokemon('?idAuthor=1');
             const body = await resp.json();
             console.log(body);
-            dispatch( getPokemons( body ) );
+            dispatch(getPokemons(body));
 
         } catch (error) {
             console.log(error)
@@ -18,14 +18,50 @@ export const startPokemonsLoading = () => {
     }
 }
 
-export const startPokemonUpdating = ( pokemonObject ) => {
-    return async(dispatch) => {
+export const startPokemonUpdating = (pokemonObject) => {
+    return async (dispatch) => {
 
         try {
-            const resp = await fetchPokemon(pokemonObject.id, pokemonObject, 'PUT' );
+            const resp = await fetchPokemon(pokemonObject.id, pokemonObject, 'PUT');
             const body = await resp.json();
             console.log(body);
-                dispatch( updatePokemon( pokemonObject ) );
+            dispatch(updatePokemon(pokemonObject));
+
+        } catch (error) {
+            console.log(error)
+        }
+
+    }
+}
+
+
+export const startPokemonAdding = (pokemonObject) => {
+    return async (dispatch) => {
+
+        try {
+            console.log(pokemonObject);
+            // const resp = await fetchPokemon('?idAuthor=1', pokemonObject, 'POST');
+            // const body = await resp.json();
+            // console.log(body)
+            // dispatch(addPokemon(pokemonObject));
+        } catch (error) {
+            console.log(error);
+        }
+
+
+
+    }
+}
+
+
+export const startPokemonDeleting = (id) => {
+    return async (dispatch) => {
+
+        try {
+            const resp = await fetchPokemon(id, [],'DELETE');
+            const body = await resp.json();
+            console.log(body);
+            dispatch(deletePokemon(id));
 
         } catch (error) {
             console.log(error)
