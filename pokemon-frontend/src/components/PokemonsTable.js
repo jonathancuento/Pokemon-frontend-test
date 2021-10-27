@@ -1,6 +1,7 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { deletePokemon, setActivePokemon, startPokemonDeleting } from '../actions/pokemonActions';
+import Swal from 'sweetalert2';
+import { setActivePokemon, startPokemonDeleting } from '../actions/pokemonActions';
 import { AddEditPokemon } from './AddEditPokemon';
 
 export const PokemonsTable = () => {
@@ -9,9 +10,35 @@ export const PokemonsTable = () => {
 
 
     const dispatch = useDispatch()
+
+
     const handleDelete = (id) => {
-        dispatch(startPokemonDeleting(id))
-        console.log(id, " eliminado");
+
+        Swal.fire({
+            title: '¿Seguro que deseas eliminar este Pokemon?',
+            text: 'Será eliminado de forma permanente!',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Si, borrar!',
+            cancelButtonText: 'No, volver'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                dispatch(startPokemonDeleting(id));
+                Swal.fire(
+                    'Pokemon eliminado!',
+                    'El Pokemon se ha eliminado.',
+                    'success'
+                )
+                // For more information about handling dismissals please visit
+                // https://sweetalert2.github.io/#handling-dismissals
+            } else if (result.dismiss === Swal.DismissReason.cancel) {
+                Swal.fire(
+                    'Cancelado',
+                    'Todo está como siempre',
+                    'error'
+                )
+            }
+        })
     }
 
 

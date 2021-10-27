@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import Modal from 'react-modal';
 import { customStyles } from '../helpers/stylesModal';
-import { addPokemon, setActivePokemon, startPokemonAdding, startPokemonUpdating, updatePokemon } from '../actions/pokemonActions';
+import { setActivePokemon, startPokemonAdding, startPokemonUpdating} from '../actions/pokemonActions';
 
 
 
@@ -21,6 +21,8 @@ export const AddEditPokemon = ({ modalIsOpen, setModalIsOpen }) => {
     const dispatch = useDispatch()
     const { activePokemon } = useSelector(state => state.pokemonState);
 
+    const [nameValid, setNameValid] = useState(true);
+    const [imageValid, setImageValid] = useState(true);
 
     const addEditText = activePokemon == null ? "Añadir nuevo" : "Guardar cambios";
 
@@ -57,13 +59,20 @@ export const AddEditPokemon = ({ modalIsOpen, setModalIsOpen }) => {
     const handleSubmit = (e) => {
         e.preventDefault();
 
+        if ( name.trim().length < 2 ) {
+            return setNameValid(false);
+        }
+        if ( image.trim().length < 2 ) {
+            return setImageValid(false);
+        }
+
         if ( activePokemon != null) {
             dispatch( startPokemonUpdating( infoPokemon ) )
         } else {
-            console.log(infoPokemon);
             dispatch( startPokemonAdding(infoPokemon) );
         }
-
+        setNameValid(true);
+        setImageValid(true);
         closeModal();
     }
 
@@ -76,13 +85,18 @@ export const AddEditPokemon = ({ modalIsOpen, setModalIsOpen }) => {
             ariaHideApp={false}
         >
             <form>
+            <div className="container d-flex justify-content-between">
+
+                <h3 className="ml-3">{addEditText}</h3>
+                <span onClick={closeModal}><h2 className="cursor">&times;</h2></span>
+            </div>
                 <div className="adddelete__container container">
                     <div className="adddelete__container-col">
                         <div className="form-group">
                             <label>Nombre</label>
                             <input
                                 type="text"
-                                className="form-control"
+                                className={ `form-control ${ !nameValid && 'is-invalid' } `}
                                 name="name"
                                 value={name}
                                 placeholder="Pikachu"
@@ -93,7 +107,7 @@ export const AddEditPokemon = ({ modalIsOpen, setModalIsOpen }) => {
                             <label>Imagen</label>
                             <input
                                 type="text"
-                                className="form-control"
+                                className={ `form-control ${ !imageValid && 'is-invalid' } `}
                                 name="image"
                                 value={image}
                                 placeholder="https://imagenes.com/imagen-pikachu.jpg"
