@@ -3,10 +3,10 @@ export const customStyles = {
         width: "60%",
         height: "auto",
         left: '25%',
-        top: "10%",
+        top: "7%",
         right: 'auto',
         bottom: 'auto',
-        maxHeight: "100vh",
+        maxHeight: "80vh",
         overflowY: "auto"
     },
 };

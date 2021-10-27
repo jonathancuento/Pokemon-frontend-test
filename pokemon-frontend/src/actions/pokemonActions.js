@@ -8,7 +8,6 @@ export const startPokemonsLoading = () => {
 
             const resp = await fetchPokemon('?idAuthor=1');
             const body = await resp.json();
-            console.log(body);
             dispatch(getPokemons(body));
 
         } catch (error) {
